@@ -1,4 +1,5 @@
 import express from "express";
+import { Patient } from "../../types";
 import { toNewPatientEntry } from "../../utils";
 import patientService from "../services/patientsService";
 
@@ -22,5 +23,16 @@ router.post('/', (req, res) => {
         res.status(400).send(errorMessage);
     }
 });
+
+
+router.get('/:id', (req, res) => {
+    const patient: Patient | undefined = patientService.getPatient(req.params.id);
+  
+    if (patient) {
+      res.send(patient);
+    } else {
+      res.sendStatus(404);
+    }
+  });
 
 export default router;
