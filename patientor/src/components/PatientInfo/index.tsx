@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import patientService from "../../services/patients";
 import { Gender, Patient } from "../../types";
 import MaleIcon from '@mui/icons-material/Male';
+import FemaleIcon from '@mui/icons-material/Female';
+import TransgenderIcon from '@mui/icons-material/Transgender';
 
 const PatientInfo = () => {
   const { id } = useParams<{ id: string }>();
@@ -24,10 +26,9 @@ const PatientInfo = () => {
   return (
     <div>
       <h2>{patientInfo.name}</h2>
-      <p>Gender: {patientInfo.gender}</p>
-      <p>Date of Birth: {patientInfo.dateOfBirth}</p>
+      {patientInfo.gender === Gender.Female ? <FemaleIcon></FemaleIcon> 
+      : patientInfo.gender === Gender.Male ? <MaleIcon></MaleIcon> : <TransgenderIcon></TransgenderIcon>}
       <p>Occupation: {patientInfo.occupation}</p>
-      <p>SSN: {patientInfo.ssn}</p>
     </div>
   );
 };
