@@ -35,19 +35,26 @@ const parseDateOfBirth = (date: unknown): string => {
 };
 
 const parseEntries = (entries: unknown): Entry[] => {
-    if (!entries || !Array.isArray(entries) || !entries.every(e => isEntry(e))) {
+    if (!entries || !Array.isArray(entries) || !entries.every(isEntry)) {
       throw new Error(`Incorrect or missing entries`);
     }
     return entries;
-  }
+};
+
+const isEntry = (entry: unknown): entry is Entry => {
+    const validTypes = ["Hospital", "OccupationalHealthcare", "HealthCheck"];
+    return (
+      typeof entry === "object" &&
+      entry !== null &&
+      "type" in entry &&
+      typeof entry["type"] === "string" &&
+      validTypes.includes(entry["type"])
+    );
+};  
   
-  const isEntry = (entry: unknown): entry is Entry => {
-    // add your own typeguard to determine if an object is an Entry
-    if(isString(entry)) {
-        return true;
-    }
-    throw new Error(`Incorrect or missing entries`);
-  }
+  
+  
+  
 
 export const toNewPatientEntry = (object: unknown): NewPatientEntry => {
     if ( !object || typeof object !== 'object' ) {
@@ -63,7 +70,7 @@ export const toNewPatientEntry = (object: unknown): NewPatientEntry => {
         ssn: parseStringType(object.ssn, 'ssn'),
         entries: parseEntries(object.entries)
         };
-
+        console.log(newEntry);
         return newEntry;
     }
 
